@@ -2,12 +2,7 @@ version: "3"
 services:
   postgres:
     image: postgres
-    container_name: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: postgres
-      TZ: 'GMT'
-      PGTZ: 'GMT'
+    container_name: cdpostgres
     ports:
       - "5432:5432"
     volumes:
@@ -19,8 +14,7 @@ services:
   pgadmin:
     links:
       - postgres:postgres
-    container_name: pgadmin
-    restart: always
+    container_name: cdpgadmin
     image: dpage/pgadmin4
     ports:
       - "8080:80"
