@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+diff=0
+
+if git diff HEAD --quiet ;
+then
+  echo "No local changes to stash..."
+else
+  diff=1
+  git stash > /dev/null
+  echo "Stashed local changes before testing..."
+fi
+
+yarn test:e2e
+
+if test $diff -ne 0
+then
+  git stash pop > /dev/null
+  echo "Reapplied stashed changes before pushing..."
+fi
