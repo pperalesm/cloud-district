@@ -9,10 +9,15 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { I18nModule } from 'nestjs-i18n';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { PlayersModule } from './modules/players/players.module';
+import { CoachesModule } from './modules/coaches/coaches.module';
+import { ClubsModule } from './modules/clubs/clubs.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot(dataSourceOptions),
     ThrottlerModule.forRoot({
       ttl: 60,
@@ -46,6 +51,9 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
       },
     }),
     NotificationsModule,
+    PlayersModule,
+    CoachesModule,
+    ClubsModule,
   ],
   providers: [
     {

@@ -1,16 +1,13 @@
-const v1 = 'v1';
-
-const playersRoot = 'players';
-const coachesRoot = 'coaches';
-
 export const routesV1 = {
-  version: v1,
+  version: 'v1',
   players: {
-    root: playersRoot,
-    delete: `/${playersRoot}/:id`,
+    root: 'players',
   },
   coaches: {
-    root: coachesRoot,
-    delete: `/${coachesRoot}/:id`,
+    root: 'coaches',
+  },
+  clubs: {
+    root: 'clubs',
+    updateBudget: `:id/budget`,
   },
 };
