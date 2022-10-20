@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Coach } from '../coaches/coach.entity';
 import { Player } from '../players/player.entity';
 import { CreateClubDto } from './dtos/create-club.dto';
-import { UpdateBudgetDto } from './dtos/update-budget.dto';
+import { UpdateClubDto } from './dtos/update-club.dto';
 
 export const CLUBS_TABLE = 'clubs';
 
@@ -32,8 +32,8 @@ export class Club {
     return club;
   }
 
-  updateBudget(updateBudgetDto: UpdateBudgetDto) {
-    this.budget = updateBudgetDto.budget;
+  setBudget(budget: number) {
+    this.budget = budget;
   }
 
   isEnoughBudget(budget: number): boolean {
@@ -41,6 +41,7 @@ export class Club {
       (previous, current) => previous + current.salary,
       0,
     );
+
     salarySum = this.coaches.reduce(
       (previous, current) => previous + current.salary,
       salarySum,

@@ -13,6 +13,7 @@ export class PlayersController {
     @Body() createPlayerDto: CreatePlayerDto,
   ): Promise<BasePlayerDto> {
     const player = await this.playersService.create(createPlayerDto);
+
     return new BasePlayerDto(player);
   }
 }

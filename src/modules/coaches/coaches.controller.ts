@@ -11,6 +11,7 @@ export class CoachesController {
   @Post()
   async create(@Body() createCoachDto: CreateCoachDto): Promise<BaseCoachDto> {
     const coach = await this.coachesService.create(createCoachDto);
+
     return new BaseCoachDto(coach);
   }
 }

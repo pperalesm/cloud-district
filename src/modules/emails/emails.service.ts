@@ -10,11 +10,11 @@ export class EmailsService implements NotificationsService {
     private readonly mailerService: MailerService,
   ) {}
 
-  async sendJoinedClub() {
+  async sendRegisteredToClub(): Promise<void> {
     return;
   }
 
-  async sendDroppedClub() {
+  async sendDroppedFromClub(): Promise<void> {
     return;
   }
 
