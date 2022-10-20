@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CustomConflict } from '../../shared/exceptions/custom-conflict';
 import { CreatePlayerDto } from './dtos/create-player.dto';
 import { Player } from './player.entity';
+import { PlayerErrors } from './player.errors';
 
 @Injectable()
 export class PlayersService {
@@ -17,7 +18,7 @@ export class PlayersService {
       where: { email: createPlayerDto.email },
     });
     if (conflictedPlayer) {
-      throw new CustomConflict(['email must be unique']);
+      throw new CustomConflict([PlayerErrors.EMAIL_UNIQUE]);
     }
 
     const newPlayer = Player.create(createPlayerDto);

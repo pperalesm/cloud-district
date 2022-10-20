@@ -1,13 +1,14 @@
 import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { PagingValidation } from './paging.validation';
 
 export class PagingDto {
-  @Min(1)
-  @Max(50)
+  @Min(PagingValidation.TAKE_MIN)
+  @Max(PagingValidation.TAKE_MAX)
   @IsInt()
   @IsOptional()
   take?: number;
 
-  @Min(0)
+  @Min(PagingValidation.SKIP_MIN)
   @IsInt()
   @IsOptional()
   skip?: number;

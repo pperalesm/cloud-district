@@ -1,5 +1,5 @@
 import { Entity, ManyToOne } from 'typeorm';
-import { Employee } from '../employees/employee';
+import { Employee } from '../../shared/abstractions/employee.entity';
 import { Club } from '../clubs/club.entity';
 import { CreateCoachDto } from './dtos/create-coach.dto';
 

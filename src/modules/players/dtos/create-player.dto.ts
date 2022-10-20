@@ -1,3 +1,3 @@
-import { CreateEmployeeDto } from '../../employees/dtos/create-employee.dto';
+import { CreateEmployeeDto } from '../../../shared/dtos/create-employee.dto';
 
 export class CreatePlayerDto extends CreateEmployeeDto {}

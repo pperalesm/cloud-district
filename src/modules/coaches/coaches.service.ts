@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomConflict } from '../../shared/exceptions/custom-conflict';
 import { Coach } from './coach.entity';
+import { CoachErrors } from './coach.errors';
 import { CreateCoachDto } from './dtos/create-coach.dto';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class CoachesService {
       where: { email: createCoachDto.email },
     });
     if (conflictedCoach) {
-      throw new CustomConflict(['A coach already exists with such email']);
+      throw new CustomConflict([CoachErrors.EMAIL_UNIQUE]);
     }
 
     const newCoach = Coach.create(createCoachDto);

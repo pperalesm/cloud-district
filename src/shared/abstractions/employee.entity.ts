@@ -1,5 +1,5 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
-import { CreateEmployeeDto } from './dtos/create-employee.dto';
+import { CreateEmployeeDto } from '../dtos/create-employee.dto';
 
 export class Employee {
   @PrimaryGeneratedColumn('uuid')

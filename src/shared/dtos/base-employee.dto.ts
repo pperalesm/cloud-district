@@ -1,4 +1,4 @@
-import { Employee } from '../employee';
+import { Employee } from '../abstractions/employee.entity';
 
 export class BaseEmployeeDto {
   id!: string;

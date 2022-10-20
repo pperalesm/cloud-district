@@ -1,7 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
-import { CustomTypeOrmLogger } from '../shared/util/custom-typeorm-logger';
-import { SnakeNamingStrategy } from '../shared/util/snake-naming-strategy';
+import { CustomTypeOrmLogger } from '../shared/util/custom-typeorm.logger';
+import { SnakeNamingStrategy } from '../shared/util/snake-naming.strategy';
 import { Club } from '../modules/clubs/club.entity';
 import { Player } from '../modules/players/player.entity';
 import { Coach } from '../modules/coaches/coach.entity';

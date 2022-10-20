@@ -2,17 +2,17 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { LoggerMiddleware } from './shared/middleware/logger.middleware';
+import { LoggerMiddleware } from './shared/util/logger.middleware';
 import { APP_GUARD } from '@nestjs/core';
 import { dataSourceOptions } from './database/typeOrm.config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { I18nModule } from 'nestjs-i18n';
-import { NotificationsModule } from './modules/notifications/notifications.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PlayersModule } from './modules/players/players.module';
 import { CoachesModule } from './modules/coaches/coaches.module';
 import { ClubsModule } from './modules/clubs/clubs.module';
+import { EmailsService } from './modules/emails/emails.service';
 
 @Module({
   imports: [
@@ -50,12 +50,15 @@ import { ClubsModule } from './modules/clubs/clubs.module';
         watch: true,
       },
     }),
-    NotificationsModule,
     PlayersModule,
     CoachesModule,
     ClubsModule,
   ],
   providers: [
+    {
+      provide: 'NotificationsService',
+      useClass: EmailsService,
+    },
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
