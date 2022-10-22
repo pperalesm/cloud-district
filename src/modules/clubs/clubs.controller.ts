@@ -11,7 +11,6 @@ import {
 import { routesV1 } from '../../app.routes';
 import { BaseCoachDto } from '../coaches/dtos/base-coach.dto';
 import { BasePlayerDto } from '../players/dtos/base-player.dto';
-import { Player } from '../players/player.entity';
 import { ClubsService } from './clubs.service';
 import { BaseClubDto } from './dtos/base-club.dto';
 import { CreateClubDto } from './dtos/create-club.dto';
@@ -75,15 +74,25 @@ export class ClubsController {
     @Param(routesV1.clubs.dropPlayerIdParam1) clubId: string,
     @Param(routesV1.clubs.dropPlayerIdParam2) playerId: string,
   ): Promise<BasePlayerDto> {
-    return new BasePlayerDto(new Player());
+    const player = await this.clubsService.dropPlayer({
+      clubId: clubId,
+      playerId: playerId,
+    });
+
+    return new BasePlayerDto(player);
   }
 
-  @Delete(routesV1.clubs.dropPlayer)
+  @Delete(routesV1.clubs.dropCoach)
   async dropCoach(
     @Param(routesV1.clubs.dropCoachIdParam1) clubId: string,
     @Param(routesV1.clubs.dropCoachIdParam2) coachId: string,
   ): Promise<BasePlayerDto> {
-    return new BasePlayerDto(new Player());
+    const coach = await this.clubsService.dropCoach({
+      clubId: clubId,
+      coachId: coachId,
+    });
+
+    return new BaseCoachDto(coach);
   }
 
   @Get(routesV1.clubs.getPlayers)

@@ -30,7 +30,11 @@ export class Club {
     return club;
   }
 
-  setBudget(budget: number) {
+  setId(id: string): void {
+    this.id = id;
+  }
+
+  setBudget(budget: number): void {
     this.budget = budget;
   }
 

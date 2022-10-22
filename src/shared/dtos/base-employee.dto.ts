@@ -4,7 +4,7 @@ export class BaseEmployeeDto {
   id!: string;
   name!: string;
   salary!: number;
-  clubId?: string;
+  clubId?: string | null;
   email!: string;
 
   constructor(employee: Employee) {

@@ -10,7 +10,7 @@ const specificClubRoute = `:${idParam}`;
 const clubPlayersRoute = `:${idParam}/players`;
 const clubCoachesRoute = `:${idParam}/coaches`;
 const specificClubPlayerRoute = `${clubPlayersRoute}/:${playerIdParam}`;
-const specificClubCoachRoute = `${clubCoachesRoute}/:${playerIdParam}`;
+const specificClubCoachRoute = `${clubCoachesRoute}/:${coachIdParam}`;
 
 export const routesV1 = {
   version: v1,

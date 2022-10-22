@@ -26,24 +26,27 @@ export class ClubsService {
   }
 
   async update(data: { clubId: string; budget?: number }): Promise<Club> {
-    const club = await this.clubsRepository.findOne({
+    const currentClub = await this.clubsRepository.findOne({
       relations: { players: true, coaches: true },
       where: { id: data.clubId },
     });
 
-    if (!club) {
+    if (!currentClub) {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
+    const updatedClub = new Club();
+    updatedClub.setId(currentClub.id);
+
     if (data.budget !== undefined) {
-      if (!club.isEnoughBudget(data.budget)) {
+      if (!currentClub.isEnoughBudget(data.budget)) {
         throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
       }
 
-      club.setBudget(data.budget);
+      updatedClub.setBudget(data.budget);
     }
 
-    return await this.clubsRepository.save(club);
+    return await this.clubsRepository.save(updatedClub);
   }
 
   async registerPlayer(data: {
@@ -86,6 +89,33 @@ export class ClubsService {
     }
 
     return await this.coachesService.joinClub(data);
+  }
+
+  async dropPlayer(data: {
+    clubId: string;
+    playerId: string;
+  }): Promise<Player> {
+    const club = await this.clubsRepository.findOne({
+      where: { id: data.clubId },
+    });
+
+    if (!club) {
+      throw new CustomNotFound([ClubErrors.NOT_FOUND]);
+    }
+
+    return await this.playersService.leaveClub(data);
+  }
+
+  async dropCoach(data: { clubId: string; coachId: string }): Promise<Coach> {
+    const club = await this.clubsRepository.findOne({
+      where: { id: data.clubId },
+    });
+
+    if (!club) {
+      throw new CustomNotFound([ClubErrors.NOT_FOUND]);
+    }
+
+    return await this.coachesService.leaveClub(data);
   }
 
   async getPlayers(data: {

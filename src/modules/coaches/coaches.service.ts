@@ -33,20 +33,42 @@ export class CoachesService {
     salary: number;
     clubId: string;
   }): Promise<Coach> {
-    const coach = await this.coachesRepository.findOne({
+    const currentCoach = await this.coachesRepository.findOne({
       where: { id: data.coachId },
     });
 
-    if (!coach) {
+    if (!currentCoach) {
       throw new CustomNotFound([CoachErrors.NOT_FOUND]);
     }
 
-    if (coach.clubId) {
+    if (currentCoach.clubId) {
       throw new CustomBadRequest([CoachErrors.ALREADY_IN_CLUB]);
     }
 
-    coach.joinClub(data);
+    const updatedCoach = new Coach();
+    updatedCoach.setId(currentCoach.id);
+    updatedCoach.joinClub(data);
 
-    return await this.coachesRepository.save(coach);
+    return await this.coachesRepository.save(updatedCoach);
+  }
+
+  async leaveClub(data: { clubId: string; coachId: string }): Promise<Coach> {
+    const currentCoach = await this.coachesRepository.findOne({
+      where: { id: data.coachId },
+    });
+
+    if (!currentCoach) {
+      throw new CustomNotFound([CoachErrors.NOT_FOUND]);
+    }
+
+    if (currentCoach.clubId !== data.clubId) {
+      throw new CustomBadRequest([CoachErrors.NOT_IN_SPECIFIED_CLUB]);
+    }
+
+    const updatedCoach = new Coach();
+    updatedCoach.setId(currentCoach.id);
+    updatedCoach.leaveClub();
+
+    return await this.coachesRepository.save(updatedCoach);
   }
 }

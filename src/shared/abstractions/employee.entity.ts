@@ -11,7 +11,7 @@ export class Employee {
   salary!: number;
 
   @Column({ nullable: true })
-  clubId?: string;
+  clubId?: string | null;
 
   @Column({ unique: true })
   email!: string;
@@ -25,8 +25,17 @@ export class Employee {
     return employee;
   }
 
-  joinClub(data: { clubId: string; salary: number }) {
+  setId(id: string): void {
+    this.id = id;
+  }
+
+  joinClub(data: { clubId: string; salary: number }): void {
     this.clubId = data.clubId;
     this.salary = data.salary;
+  }
+
+  leaveClub(): void {
+    this.clubId = null;
+    this.salary = 0;
   }
 }
