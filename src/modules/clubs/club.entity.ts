@@ -12,7 +12,7 @@ export class Club {
   @Column()
   name!: string;
 
-  @Column({ type: 'float', default: 0 })
+  @Column({ type: 'float' })
   budget!: number;
 
   @OneToMany(() => Player, (player) => player.club)

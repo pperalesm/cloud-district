@@ -67,7 +67,7 @@ export class ClubsService {
       throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
     }
 
-    return await this.playersService.joinClub(data);
+    return await this.playersService.joinClub({ ...data, clubName: club.name });
   }
 
   async registerCoach(data: {
@@ -88,7 +88,7 @@ export class ClubsService {
       throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
     }
 
-    return await this.coachesService.joinClub(data);
+    return await this.coachesService.joinClub({ ...data, clubName: club.name });
   }
 
   async dropPlayer(data: {
@@ -103,7 +103,10 @@ export class ClubsService {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    return await this.playersService.leaveClub(data);
+    return await this.playersService.leaveClub({
+      ...data,
+      clubName: club.name,
+    });
   }
 
   async dropCoach(data: { clubId: string; coachId: string }): Promise<Coach> {
@@ -115,7 +118,10 @@ export class ClubsService {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    return await this.coachesService.leaveClub(data);
+    return await this.coachesService.leaveClub({
+      ...data,
+      clubName: club.name,
+    });
   }
 
   async getPlayers(data: {

@@ -1,4 +1,14 @@
+import { Employee } from './employee.entity';
+
+export const NOTIFICATIONS_SERVICE_TOKEN = 'NotificationsService';
+
 export interface NotificationsService {
-  sendRegisteredToClub: () => Promise<void>;
-  sendDroppedFromClub: () => Promise<void>;
+  sendRegisteredToClub: (data: {
+    employee: Employee;
+    clubName: string;
+  }) => Promise<void>;
+  sendDroppedFromClub: (data: {
+    employee: Employee;
+    clubName: string;
+  }) => Promise<void>;
 }

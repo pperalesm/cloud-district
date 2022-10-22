@@ -9,7 +9,11 @@ export class Player extends Employee {
   @ManyToOne(() => Club, (club) => club.players, { nullable: true })
   club?: Club;
 
-  static create(data: { name: string; email: string }): Player {
+  static create(data: {
+    name: string;
+    email: string;
+    language: string;
+  }): Player {
     const employee = Employee.create(data);
 
     return employee as Player;

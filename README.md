@@ -7,5 +7,6 @@
 7. port: 5432
 8. username: postgres
 9. password: postgres
-10. yarn migration:run
-11. yarn start:dev
+10. yarn install
+11. yarn migration:run
+12. yarn start:dev

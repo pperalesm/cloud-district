@@ -1,3 +1,6 @@
 export const EmployeeValidation = {
-  NAME_MIN_LENGTH: 1,
+  LANGUAGE_LENGTH: 2,
+  DEFAULT_LANGUAGE: 'en',
+  DEFAULT_SALARY: 0,
+  NAME_REGEX: /^[a-zA-Z ,.'-]+$/,
 };

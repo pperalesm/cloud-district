@@ -12,7 +12,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PlayersModule } from './modules/players/players.module';
 import { CoachesModule } from './modules/coaches/coaches.module';
 import { ClubsModule } from './modules/clubs/clubs.module';
-import { EmailsService } from './modules/emails/emails.service';
 
 @Module({
   imports: [
@@ -55,10 +54,6 @@ import { EmailsService } from './modules/emails/emails.service';
     ClubsModule,
   ],
   providers: [
-    {
-      provide: 'NotificationsService',
-      useClass: EmailsService,
-    },
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

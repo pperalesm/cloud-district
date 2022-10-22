@@ -1,4 +1,5 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { EmployeeValidation } from '../dtos/employee.validation';
 
 export class Employee {
   @PrimaryGeneratedColumn('uuid')
@@ -7,7 +8,7 @@ export class Employee {
   @Column()
   name!: string;
 
-  @Column({ type: 'float', default: 0 })
+  @Column({ type: 'float' })
   salary!: number;
 
   @Column({ nullable: true })
@@ -16,11 +17,20 @@ export class Employee {
   @Column({ unique: true })
   email!: string;
 
-  static create(data: { name: string; email: string }): Employee {
+  @Column()
+  language!: string;
+
+  static create(data: {
+    name: string;
+    email: string;
+    language: string;
+  }): Employee {
     const employee = new Employee();
 
     employee.name = data.name;
     employee.email = data.email;
+    employee.language = data.language;
+    employee.salary = EmployeeValidation.DEFAULT_SALARY;
 
     return employee;
   }
