@@ -1,5 +1,4 @@
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
-import { CreateEmployeeDto } from '../dtos/create-employee.dto';
 
 export class Employee {
   @PrimaryGeneratedColumn('uuid')
@@ -17,17 +16,17 @@ export class Employee {
   @Column({ unique: true })
   email!: string;
 
-  static create(createEmployeeDto: CreateEmployeeDto): Employee {
+  static create(data: { name: string; email: string }): Employee {
     const employee = new Employee();
 
-    employee.name = createEmployeeDto.name;
-    employee.email = createEmployeeDto.email;
+    employee.name = data.name;
+    employee.email = data.email;
 
     return employee;
   }
 
-  joinClub(clubId: string, salary: number) {
-    this.clubId = clubId;
-    this.salary = salary;
+  joinClub(data: { clubId: string; salary: number }) {
+    this.clubId = data.clubId;
+    this.salary = data.salary;
   }
 }

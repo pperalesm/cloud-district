@@ -33,40 +33,46 @@ export class ClubsController {
 
   @Patch(routesV1.clubs.update)
   async update(
-    @Param(routesV1.clubs.updateIdParam1) id: string,
+    @Param(routesV1.clubs.updateIdParam1) clubId: string,
     @Body() updateClubDto: UpdateClubDto,
   ): Promise<BaseClubDto> {
-    const club = await this.clubsService.update(id, updateClubDto);
+    const club = await this.clubsService.update({
+      ...updateClubDto,
+      clubId: clubId,
+    });
 
     return new BaseClubDto(club);
   }
 
   @Post(routesV1.clubs.registerPlayer)
   async registerPlayer(
-    @Param(routesV1.clubs.registerPlayerIdParam1) id: string,
+    @Param(routesV1.clubs.registerPlayerIdParam1) clubId: string,
     @Body() registerPlayerDto: RegisterPlayerDto,
   ): Promise<BasePlayerDto> {
-    const player = await this.clubsService.registerPlayer(
-      id,
-      registerPlayerDto,
-    );
+    const player = await this.clubsService.registerPlayer({
+      ...registerPlayerDto,
+      clubId: clubId,
+    });
 
     return new BasePlayerDto(player);
   }
 
   @Post(routesV1.clubs.registerCoach)
   async registerCoach(
-    @Param(routesV1.clubs.registerCoachIdParam1) id: string,
+    @Param(routesV1.clubs.registerCoachIdParam1) clubId: string,
     @Body() registerCoachDto: RegisterCoachDto,
   ): Promise<BaseCoachDto> {
-    const coach = await this.clubsService.registerCoach(id, registerCoachDto);
+    const coach = await this.clubsService.registerCoach({
+      ...registerCoachDto,
+      clubId: clubId,
+    });
 
     return new BaseCoachDto(coach);
   }
 
   @Delete(routesV1.clubs.dropPlayer)
   async dropPlayer(
-    @Param(routesV1.clubs.dropPlayerIdParam1) id: string,
+    @Param(routesV1.clubs.dropPlayerIdParam1) clubId: string,
     @Param(routesV1.clubs.dropPlayerIdParam2) playerId: string,
   ): Promise<BasePlayerDto> {
     return new BasePlayerDto(new Player());
@@ -74,7 +80,7 @@ export class ClubsController {
 
   @Delete(routesV1.clubs.dropPlayer)
   async dropCoach(
-    @Param(routesV1.clubs.dropCoachIdParam1) id: string,
+    @Param(routesV1.clubs.dropCoachIdParam1) clubId: string,
     @Param(routesV1.clubs.dropCoachIdParam2) coachId: string,
   ): Promise<BasePlayerDto> {
     return new BasePlayerDto(new Player());
@@ -82,10 +88,13 @@ export class ClubsController {
 
   @Get(routesV1.clubs.getPlayers)
   async getPlayers(
-    @Param(routesV1.clubs.getPlayersIdParam1) id: string,
+    @Param(routesV1.clubs.getPlayersIdParam1) clubId: string,
     @Query() getPlayersDto: GetPlayersDto,
   ): Promise<BasePlayerDto[]> {
-    const players = await this.clubsService.getPlayers(id, getPlayersDto);
+    const players = await this.clubsService.getPlayers({
+      ...getPlayersDto,
+      clubId: clubId,
+    });
 
     return players.map((player) => new BasePlayerDto(player));
   }

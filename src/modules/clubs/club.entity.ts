@@ -1,8 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Coach } from '../coaches/coach.entity';
 import { Player } from '../players/player.entity';
-import { CreateClubDto } from './dtos/create-club.dto';
-import { UpdateClubDto } from './dtos/update-club.dto';
 
 export const CLUBS_TABLE = 'clubs';
 
@@ -23,11 +21,11 @@ export class Club {
   @OneToMany(() => Coach, (coach) => coach.club)
   coaches!: Coach[];
 
-  static create(createClubDto: CreateClubDto): Club {
+  static create(data: { name: string; budget: number }): Club {
     const club = new Club();
 
-    club.name = createClubDto.name;
-    club.budget = createClubDto.budget;
+    club.name = data.name;
+    club.budget = data.budget;
 
     return club;
   }

@@ -9,11 +9,6 @@ import { Player } from '../players/player.entity';
 import { PlayersService } from '../players/players.service';
 import { Club } from './club.entity';
 import { ClubErrors } from './club.errors';
-import { CreateClubDto } from './dtos/create-club.dto';
-import { GetPlayersDto } from './dtos/get-players.dto';
-import { RegisterCoachDto } from './dtos/register-coach.dto';
-import { RegisterPlayerDto } from './dtos/register-player.dto';
-import { UpdateClubDto } from './dtos/update-club.dto';
 
 @Injectable()
 export class ClubsService {
@@ -24,85 +19,89 @@ export class ClubsService {
     private readonly coachesService: CoachesService,
   ) {}
 
-  async create(createClubDto: CreateClubDto): Promise<Club> {
-    const newClub = Club.create(createClubDto);
+  async create(data: { name: string; budget: number }): Promise<Club> {
+    const newClub = Club.create(data);
 
     return await this.clubsRepository.save(newClub);
   }
 
-  async update(id: string, updateClubDto: UpdateClubDto): Promise<Club> {
+  async update(data: { clubId: string; budget?: number }): Promise<Club> {
     const club = await this.clubsRepository.findOne({
       relations: { players: true, coaches: true },
-      where: { id: id },
+      where: { id: data.clubId },
     });
 
     if (!club) {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    if (updateClubDto.budget !== undefined) {
-      if (!club.isEnoughBudget(updateClubDto.budget)) {
+    if (data.budget !== undefined) {
+      if (!club.isEnoughBudget(data.budget)) {
         throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
       }
 
-      club.setBudget(updateClubDto.budget);
+      club.setBudget(data.budget);
     }
 
     return await this.clubsRepository.save(club);
   }
 
-  async registerPlayer(
-    id: string,
-    registerPlayerDto: RegisterPlayerDto,
-  ): Promise<Player> {
+  async registerPlayer(data: {
+    clubId: string;
+    playerId: string;
+    salary: number;
+  }): Promise<Player> {
     const club = await this.clubsRepository.findOne({
       relations: { players: true, coaches: true },
-      where: { id: id },
+      where: { id: data.clubId },
     });
 
     if (!club) {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    if (!club.isEnoughBudget(club.budget - registerPlayerDto.salary)) {
+    if (!club.isEnoughBudget(club.budget - data.salary)) {
       throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
     }
 
-    return await this.playersService.joinClub(registerPlayerDto, id);
+    return await this.playersService.joinClub(data);
   }
 
-  async registerCoach(
-    id: string,
-    registerCoachDto: RegisterCoachDto,
-  ): Promise<Coach> {
+  async registerCoach(data: {
+    clubId: string;
+    coachId: string;
+    salary: number;
+  }): Promise<Coach> {
     const club = await this.clubsRepository.findOne({
       relations: { players: true, coaches: true },
-      where: { id: id },
+      where: { id: data.clubId },
     });
 
     if (!club) {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    if (!club.isEnoughBudget(club.budget - registerCoachDto.salary)) {
+    if (!club.isEnoughBudget(club.budget - data.salary)) {
       throw new CustomBadRequest([ClubErrors.NOT_ENOUGH_BUDGET]);
     }
 
-    return await this.coachesService.joinClub(registerCoachDto, id);
+    return await this.coachesService.joinClub(data);
   }
 
-  async getPlayers(
-    id: string,
-    getPlayersDto: GetPlayersDto,
-  ): Promise<Player[]> {
+  async getPlayers(data: {
+    clubId: string;
+    name: string;
+    take: number;
+    skip: number;
+  }): Promise<Player[]> {
     const club = await this.clubsRepository.findOne({
-      where: { id: id },
+      where: { id: data.clubId },
     });
 
     if (!club) {
       throw new CustomNotFound([ClubErrors.NOT_FOUND]);
     }
 
-    return await this.playersService.getAllFromClub(getPlayersDto, id);
+    return await this.playersService.getAllFromClub(data);
   }
 }

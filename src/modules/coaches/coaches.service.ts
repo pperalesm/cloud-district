@@ -4,10 +4,8 @@ import { Repository } from 'typeorm';
 import { CustomBadRequest } from '../../shared/exceptions/custom-bad-request';
 import { CustomConflict } from '../../shared/exceptions/custom-conflict';
 import { CustomNotFound } from '../../shared/exceptions/custom-not-found';
-import { RegisterCoachDto } from '../clubs/dtos/register-coach.dto';
 import { Coach } from './coach.entity';
 import { CoachErrors } from './coach.errors';
-import { CreateCoachDto } from './dtos/create-coach.dto';
 
 @Injectable()
 export class CoachesService {
@@ -16,26 +14,27 @@ export class CoachesService {
     private readonly coachesRepository: Repository<Coach>,
   ) {}
 
-  async create(createCoachDto: CreateCoachDto): Promise<Coach> {
+  async create(data: { name: string; email: string }): Promise<Coach> {
     const conflictedCoach = await this.coachesRepository.findOne({
-      where: { email: createCoachDto.email },
+      where: { email: data.email },
     });
 
     if (conflictedCoach) {
       throw new CustomConflict([CoachErrors.EMAIL_UNIQUE]);
     }
 
-    const newCoach = Coach.create(createCoachDto);
+    const newCoach = Coach.create(data);
 
     return await this.coachesRepository.save(newCoach);
   }
 
-  async joinClub(
-    registerCoachDto: RegisterCoachDto,
-    clubId: string,
-  ): Promise<Coach> {
+  async joinClub(data: {
+    coachId: string;
+    salary: number;
+    clubId: string;
+  }): Promise<Coach> {
     const coach = await this.coachesRepository.findOne({
-      where: { id: registerCoachDto.id },
+      where: { id: data.coachId },
     });
 
     if (!coach) {
@@ -46,7 +45,7 @@ export class CoachesService {
       throw new CustomBadRequest([CoachErrors.ALREADY_IN_CLUB]);
     }
 
-    coach.joinClub(clubId, registerCoachDto.salary);
+    coach.joinClub(data);
 
     return await this.coachesRepository.save(coach);
   }

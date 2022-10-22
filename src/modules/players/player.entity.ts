@@ -1,7 +1,6 @@
 import { Entity, ManyToOne } from 'typeorm';
 import { Employee } from '../../shared/abstractions/employee.entity';
 import { Club } from '../clubs/club.entity';
-import { CreatePlayerDto } from './dtos/create-player.dto';
 
 export const PLAYERS_TABLE = 'players';
 
@@ -10,8 +9,8 @@ export class Player extends Employee {
   @ManyToOne(() => Club, (club) => club.players, { nullable: true })
   club?: Club;
 
-  static create(createPlayerDto: CreatePlayerDto): Player {
-    const employee = Employee.create(createPlayerDto);
+  static create(data: { name: string; email: string }): Player {
+    const employee = Employee.create(data);
 
     return employee as Player;
   }

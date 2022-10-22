@@ -3,7 +3,7 @@ import { ClubValidation } from './club.validation';
 
 export class RegisterCoachDto {
   @IsUUID(ClubValidation.UUID_VERSION as UUIDVersion)
-  id!: string;
+  coachId!: string;
 
   @Min(ClubValidation.SALARY_MIN)
   @IsNumber()
