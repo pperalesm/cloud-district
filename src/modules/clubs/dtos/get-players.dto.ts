@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
-import { PagingDto } from '../../../shared/dtos/paging.dto';
+import { PaginationDto } from '../../../shared/dtos/pagination.dto';
 
-export class GetPlayersDto extends PagingDto {
+export class GetPlayersDto extends PaginationDto {
   @IsString()
   @IsOptional()
   name?: string;
