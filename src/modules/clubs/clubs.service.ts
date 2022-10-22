@@ -10,6 +10,7 @@ import { PlayersService } from '../players/players.service';
 import { Club } from './club.entity';
 import { ClubErrors } from './club.errors';
 import { CreateClubDto } from './dtos/create-club.dto';
+import { GetPlayersDto } from './dtos/get-players.dto';
 import { RegisterCoachDto } from './dtos/register-coach.dto';
 import { RegisterPlayerDto } from './dtos/register-player.dto';
 import { UpdateClubDto } from './dtos/update-club.dto';
@@ -88,5 +89,20 @@ export class ClubsService {
     }
 
     return await this.coachesService.joinClub(registerCoachDto, id);
+  }
+
+  async getPlayers(
+    id: string,
+    getPlayersDto: GetPlayersDto,
+  ): Promise<Player[]> {
+    const club = await this.clubsRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!club) {
+      throw new CustomNotFound([ClubErrors.NOT_FOUND]);
+    }
+
+    return await this.playersService.getAllFromClub(getPlayersDto, id);
   }
 }

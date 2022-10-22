@@ -3,4 +3,5 @@ export const ClubValidation = {
   BUDGET_MIN: 0,
   SALARY_MIN: 0,
   UUID_VERSION: 4,
+  DEFAULT_NAME: '',
 };

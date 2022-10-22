@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CustomBadRequest } from '../../shared/exceptions/custom-bad-request';
 import { CustomConflict } from '../../shared/exceptions/custom-conflict';
 import { CustomNotFound } from '../../shared/exceptions/custom-not-found';
+import { GetPlayersDto } from '../clubs/dtos/get-players.dto';
 import { RegisterPlayerDto } from '../clubs/dtos/register-player.dto';
 import { CreatePlayerDto } from './dtos/create-player.dto';
 import { Player } from './player.entity';
@@ -49,5 +50,19 @@ export class PlayersService {
     player.joinClub(clubId, registerPlayerDto.salary);
 
     return await this.playersRepository.save(player);
+  }
+
+  async getAllFromClub(
+    getPlayersDto: GetPlayersDto,
+    clubId: string,
+  ): Promise<Player[]> {
+    return await this.playersRepository.find({
+      where: {
+        clubId: clubId,
+        name: ILike(`%${getPlayersDto.name}%`),
+      },
+      take: getPlayersDto.take,
+      skip: getPlayersDto.skip,
+    });
   }
 }

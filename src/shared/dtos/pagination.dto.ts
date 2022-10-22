@@ -6,10 +6,10 @@ export class PaginationDto {
   @Max(PaginationValidation.TAKE_MAX)
   @IsInt()
   @IsOptional()
-  take?: number;
+  take: number = PaginationValidation.DEFAULT_TAKE;
 
   @Min(PaginationValidation.SKIP_MIN)
   @IsInt()
   @IsOptional()
-  skip?: number;
+  skip: number = PaginationValidation.DEFAULT_SKIP;
 }

@@ -85,6 +85,8 @@ export class ClubsController {
     @Param(routesV1.clubs.getPlayersIdParam1) id: string,
     @Query() getPlayersDto: GetPlayersDto,
   ): Promise<BasePlayerDto[]> {
-    return [new BasePlayerDto(new Player())];
+    const players = await this.clubsService.getPlayers(id, getPlayersDto);
+
+    return players.map((player) => new BasePlayerDto(player));
   }
 }
