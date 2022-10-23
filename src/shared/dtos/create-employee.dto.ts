@@ -1,10 +1,4 @@
-import {
-  IsAlpha,
-  IsEmail,
-  IsOptional,
-  Matches,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsIn, IsOptional, Matches } from 'class-validator';
 import { EmployeeValidation } from './employee.validation';
 
 export class CreateEmployeeDto {
@@ -14,8 +8,7 @@ export class CreateEmployeeDto {
   @IsEmail()
   email!: string;
 
-  @MinLength(EmployeeValidation.LANGUAGE_LENGTH)
-  @IsAlpha()
+  @IsIn(EmployeeValidation.AVAILABLE_LANGUAGES)
   @IsOptional()
   language: string = EmployeeValidation.DEFAULT_LANGUAGE;
 }
